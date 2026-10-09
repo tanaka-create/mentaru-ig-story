@@ -1,20 +1,20 @@
 name: めんたるIG ストーリー自動投稿
 
-# 毎朝 7:00 JST に、その日の2枚（問いかけ→答え）を投稿する。cron は UTC。
-# GitHubの起動は遅れることがあるので 6:40 に起動して 7:00 まで待つ。遅れた日用に予備の起動もある
+# 毎朝 6:00 JST に、未投稿のセットを1つ（問いかけ→答えの2枚）投稿する。cron は UTC。
+# GitHubの起動は遅れることがあるので 5:40 に起動して 6:00 まで待つ。遅れた日用に予備の起動もある
 # （その日すでに出していれば何もしない／途中で止まっていれば続きから出す）。
 on:
   schedule:
-    - cron: '40 21 * * *'   # 06:40 JST
+    - cron: '40 20 * * *'   # 05:40 JST
     - cron: '17 23 * * *'   # 08:17 JST 予備
     - cron: '43 1 * * *'    # 10:43 JST 予備
     - cron: '23 4 * * *'    # 13:23 JST 予備
   workflow_dispatch:
     inputs:
       mode:
-        description: 'dry_run=確認だけ / check=鍵と権限の確認 / post=今日の分を今すぐ投稿 / notify_test=LINE通知テスト'
+        description: 'dry_run=確認だけ / check=鍵と権限の確認 / post=今日の分を今すぐ投稿 / extra=今日もう1セット追加で投稿 / notify_test=LINE通知テスト'
         type: choice
-        options: [dry_run, check, post, notify_test]
+        options: [dry_run, check, post, extra, notify_test]
         default: dry_run
 
 permissions:
@@ -45,6 +45,7 @@ jobs:
             dry_run) python3 post_story.py --dry-run --force ;;
             check|notify_test) python3 post_story.py --check ;;
             post)    python3 post_story.py ;;
+            extra)   python3 post_story.py --force ;;
             *)       python3 post_story.py ;;
           esac
       - name: 投稿記録をコミットする

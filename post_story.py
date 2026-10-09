@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """めんたるIG（店舗経営者向けコミュニティ）の Instagram ストーリーを毎日自動投稿する。
 
-毎朝 POST_HOUR 時に、images/その日の日付/ の 1.jpg（問いかけ）→ 2.jpg（答え）を順にストーリーへ出す。
+毎朝 POST_HOUR 時に、images/ の中でまだ出していない一番若い番号のセット（001, 002…）の 1.jpg（問いかけ）→ 2.jpg（答え）を出す。
 - 1日1回だけ。投稿済みかは history.json で判定。途中で止まった日は予備の起動で続きから出す
 - その日の画像がないとき（ストック切れ）はLINEで知らせる
 - 鍵（トークン）の期限が残り7日・3日・1日の朝と、失敗したときはLINE（saki's AI →「わたしのしごと」）に知らせる
@@ -29,7 +29,7 @@ JST = dt.timezone(dt.timedelta(hours=9))
 API = "https://graph.instagram.com/v22.0" if os.environ.get("IG_ACCESS_TOKEN", "").startswith("IGAA") else "https://graph.facebook.com/v22.0"
 TOKEN_ISSUED = os.environ.get("IG_TOKEN_ISSUED", "")  # IGAAトークンは期限を問い合わせられないので、発行日から60日で数える
 RAW = "https://raw.githubusercontent.com/tanaka-create/mentaru-ig-story/main/images/"
-POST_HOUR = int(os.environ.get("POST_HOUR") or 7)
+POST_HOUR = int(os.environ.get("POST_HOUR") or 6)
 LATEST_HOUR = 15        # GitHubの起動が大幅に遅れても、この時刻を過ぎたら出さない
 NOTIFY_DAYS = (7, 3, 1)
 RENEW_HOWTO = ("【更新のしかた】Metaの開発者画面 → アプリ → Instagram → APIセットアップ → めんたるIGの「トークンを生成」（IGAA〜）\n"
@@ -121,7 +121,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--force", action="store_true", help="時刻と投稿済みの判定を無視（手動テスト用）")
-    ap.add_argument("--date", help="出す日付（手動テスト用。既定は今日）")
+    ap.add_argument("--date", help="今日の日付の上書き（テスト用）")
     a = ap.parse_args()
     if a.check:
         token, uid = connect()
@@ -133,21 +133,28 @@ def main():
         print("[SKIP] Instagramの鍵がまだ登録されていない（設定が終わるまで何もしない）")
         return 0
     t = now()
-    day = a.date or t.date().isoformat()
+    today = a.date or t.date().isoformat()
     history = json.loads(HISTORY.read_text()) if HISTORY.exists() else []
-    entry = next((h for h in history if h["date"] == day), None)
-    files = sorted(p.name for p in (BASE / "images" / day).glob("*.jpg")) if (BASE / "images" / day).exists() else []
-    if not files:
-        print("[SKIP] 今日の画像がない:", day)
-        if not a.dry_run and t.hour >= POST_HOUR and not any(h.get("missing") == day for h in history):
-            line(f"⚠️ めんたるIGのストーリー：{day} の画像がありません（ストック切れ）。Claudeに「めんたるのストーリーズ次の30日分つくって」でOK")
-            history.append({"date": day, "missing": day, "posted": 0})
-            HISTORY.write_text(json.dumps(history, ensure_ascii=False, indent=1))
-        return 0
-    done = entry.get("posted", 0) if entry else 0
-    if done >= len(files) and not a.force:
-        print("[SKIP] 今日はもう投稿済み")
-        return 0
+    sets = sorted(p.name for p in (BASE / "images").iterdir() if p.is_dir())
+    # 途中で止まったセットがあれば、その続き。なければ次の未投稿セット
+    entry = next((h for h in history if h.get("posted", 0) < h.get("total", 2)), None)
+    if not entry:
+        if not a.force and any(h["date"] == today for h in history):
+            print("[SKIP] 今日はもう投稿済み")
+            return 0
+        done_sets = {h["set"] for h in history}
+        nxt = next((x for x in sets if x not in done_sets), None)
+        left = len([x for x in sets if x not in done_sets])
+        if not nxt:
+            print("[SKIP] 未投稿のセットがない（ストック切れ）")
+            if not a.dry_run and t.hour >= POST_HOUR:
+                line("⚠️ めんたるIGのストーリーのストックが切れました（自動補充が動いていない可能性）")
+            return 0
+        entry = {"date": today, "set": nxt, "posted": 0, "total": len(list((BASE / "images" / nxt).glob("*.jpg")))}
+        print(f"[INFO] 次のセット: {nxt}（未投稿 {left}セット）")
+    day = entry["set"]
+    files = sorted(p.name for p in (BASE / "images" / day).glob("*.jpg"))
+    done = entry["posted"]
     if not a.force and not done:
         if t.hour >= LATEST_HOUR:
             print(f"[SKIP] {LATEST_HOUR}時を過ぎたので今日は出さない")
@@ -165,8 +172,8 @@ def main():
         return 0
     token, uid = connect()
     check_expiry(token)
-    if not entry:
-        entry = {"date": day, "time": now().strftime("%H:%M"), "posted": 0}
+    if entry not in history:
+        entry["time"] = now().strftime("%H:%M")
         history.append(entry)
     try:
         for f in rest:
