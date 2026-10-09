@@ -124,6 +124,9 @@ def main():
         print("[CHECK] 投稿権限OK:", lim.get("data", [{}])[0])
         check_expiry(token, force=os.environ.get("NOTIFY_TEST") == "1")
         return 0
+    if not os.environ.get("IG_ACCESS_TOKEN") and not a.dry_run:
+        print("[SKIP] Instagramの鍵がまだ登録されていない（設定が終わるまで何もしない）")
+        return 0
     t = now()
     day = a.date or t.date().isoformat()
     history = json.loads(HISTORY.read_text()) if HISTORY.exists() else []
