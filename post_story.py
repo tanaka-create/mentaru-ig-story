@@ -25,12 +25,14 @@ from urllib.request import Request, urlopen
 BASE = Path(__file__).resolve().parent
 HISTORY = BASE / "history.json"
 JST = dt.timezone(dt.timedelta(hours=9))
-API = "https://graph.facebook.com/v22.0"
+# 「EAA〜」＝システムユーザーのトークン（graph.facebook.com）／「IGAA〜」＝Instagramログインのトークン（graph.instagram.com）
+API = "https://graph.instagram.com/v22.0" if os.environ.get("IG_ACCESS_TOKEN", "").startswith("IGAA") else "https://graph.facebook.com/v22.0"
+TOKEN_ISSUED = os.environ.get("IG_TOKEN_ISSUED", "")  # IGAAトークンは期限を問い合わせられないので、発行日から60日で数える
 RAW = "https://raw.githubusercontent.com/tanaka-create/mentaru-ig-story/main/images/"
 POST_HOUR = int(os.environ.get("POST_HOUR") or 7)
 LATEST_HOUR = 15        # GitHubの起動が大幅に遅れても、この時刻を過ぎたら出さない
 NOTIFY_DAYS = (7, 3, 1)
-RENEW_HOWTO = ("【更新のしかた】ビジネス設定 → システムユーザー → トークンを生成（60日・instagram_content_publish 入り）\n"
+RENEW_HOWTO = ("【更新のしかた】Metaの開発者画面 → アプリ → Instagram → APIセットアップ → めんたるIGの「トークンを生成」（IGAA〜）\n"
                "→ GitHub の mentaru-ig-story の Secrets「IG_ACCESS_TOKEN」に上書き\n"
                "わからなければClaudeに「めんたるのストーリーの鍵を更新したい」でOK")
 
@@ -66,9 +68,12 @@ def line(text):
 
 def check_expiry(token, force=False):
     try:
-        info = api("GET", "debug_token", token, input_token=token).get("data", {})
-        exp = info.get("expires_at") or info.get("data_access_expires_at")
-        left = (dt.datetime.fromtimestamp(exp, JST) - now()).days if exp else None
+        if token.startswith("IGAA"):
+            left = (dt.date.fromisoformat(TOKEN_ISSUED) + dt.timedelta(days=60) - now().date()).days if TOKEN_ISSUED else None
+        else:
+            info = api("GET", "debug_token", token, input_token=token).get("data", {})
+            exp = info.get("expires_at") or info.get("data_access_expires_at")
+            left = (dt.datetime.fromtimestamp(exp, JST) - now()).days if exp else None
     except Exception as e:
         print("[WARN] 期限の確認に失敗", e)
         return
