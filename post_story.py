@@ -16,6 +16,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import subprocess
 import time
 from pathlib import Path
 from urllib.error import HTTPError
@@ -28,7 +29,11 @@ JST = dt.timezone(dt.timedelta(hours=9))
 # 「EAA〜」＝システムユーザーのトークン（graph.facebook.com）／「IGAA〜」＝Instagramログインのトークン（graph.instagram.com）
 API = "https://graph.instagram.com/v22.0" if os.environ.get("IG_ACCESS_TOKEN", "").startswith("IGAA") else "https://graph.facebook.com/v22.0"
 TOKEN_ISSUED = os.environ.get("IG_TOKEN_ISSUED", "")  # IGAAトークンは期限を問い合わせられないので、発行日から60日で数える
+# 画像は公開リポジトリの URL から Instagram に取り込ませる。
+# raw URL は途中で切れることがあり、フォア＆モアで下半分が灰色の画像が出た（2026-10-22）。
+# そのため jsDelivr（配信用CDN・コミット固定）を優先し、事前に全体が取れるか確かめてから渡す
 RAW = "https://raw.githubusercontent.com/tanaka-create/mentaru-ig-story/main/images/"
+CDN = "https://cdn.jsdelivr.net/gh/tanaka-create/mentaru-ig-story@{sha}/images/"
 POST_HOUR = int(os.environ.get("POST_HOUR") or 6)
 LATEST_HOUR = 15        # GitHubの起動が大幅に遅れても、この時刻を過ぎたら出さない
 NOTIFY_DAYS = (7, 3, 1)
@@ -80,6 +85,32 @@ def check_expiry(token, force=False):
     print("[INFO] 鍵の残り日数:", left if left is not None else "無期限")
     if left is not None and (left in NOTIFY_DAYS or left <= 0 or force):
         line(f"📸 めんたるIGのストーリー自動投稿\nInstagramの鍵が{'今日で切れます' if left <= 0 else f'あと{left}日で切れます'}。\n{RENEW_HOWTO}")
+
+
+def commit_sha():
+    try:
+        return subprocess.run(["git", "rev-parse", "HEAD"], cwd=BASE, capture_output=True,
+                              text=True, check=True).stdout.strip() or None
+    except Exception:
+        return None
+
+
+def image_url(rel):
+    """手元の画像と1バイトも違わずに取れるURLを返す（途中で切れたURLは渡さない）。"""
+    local = (BASE / "images" / rel).read_bytes()
+    sha = commit_sha()
+    urls = ([CDN.format(sha=sha) + rel] if sha else []) + [RAW + rel]
+    for url in urls:
+        for i in range(3):
+            try:
+                with urlopen(Request(url, headers={"User-Agent": "mentaru-story"}), timeout=60) as r:
+                    if r.read() == local:
+                        return url
+                print(f"[WARN] 画像が途中で切れていた（{i + 1}回目）: {url}")
+            except Exception as exc:
+                print(f"[WARN] 画像の確認に失敗（{i + 1}回目）: {url} {exc}")
+            time.sleep(5)
+    raise RuntimeError(f"画像を完全な形で取得できるURLがない: {rel}")
 
 
 def post_image(token, uid, url, tries=3):
@@ -177,7 +208,7 @@ def main():
         history.append(entry)
     try:
         for f in rest:
-            mid = post_image(token, uid, RAW + f"{day}/{f}")
+            mid = post_image(token, uid, image_url(f"{day}/{f}"))
             entry["posted"] = entry.get("posted", 0) + 1
             print(f"[OK] {day}/{f} → {mid}")
             time.sleep(5)
