@@ -77,9 +77,9 @@
   "posted_at": "2026-10-26T07:46+09:00",
   "media_type": "IMAGE",
   "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4016032531374765332",
-  "fetched_at": "2026-10-26T16:56+09:00",
-  "views": 37,
-  "reach": 24,
+  "fetched_at": "2026-10-27T00:18+09:00",
+  "views": 44,
+  "reach": 30,
   "replies": 0,
   "shares": 0,
   "total_interactions": 1,
@@ -87,17 +87,36 @@
   "profile_visits": 0,
   "navigation": {
    "tap_exit": 1,
-   "tap_forward": 23,
+   "tap_forward": 28,
    "tap_back": 5,
-   "swipe_forward": 1
+   "swipe_forward": 2
   }
  },
  "18070995740772052": {
   "posted_at": "2026-10-26T07:47+09:00",
   "media_type": "IMAGE",
   "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4016032673544901864",
-  "fetched_at": "2026-10-26T16:56+09:00",
-  "views": 29,
+  "fetched_at": "2026-10-27T00:18+09:00",
+  "views": 37,
+  "reach": 29,
+  "replies": 0,
+  "shares": 0,
+  "total_interactions": 1,
+  "follows": 0,
+  "profile_visits": 0,
+  "navigation": {
+   "tap_back": 3,
+   "tap_exit": 8,
+   "tap_forward": 23,
+   "swipe_forward": 1
+  }
+ },
+ "18149778814489378": {
+  "posted_at": "2026-10-26T13:15+09:00",
+  "media_type": "VIDEO",
+  "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4016198185261182165",
+  "fetched_at": "2026-10-27T00:18+09:00",
+  "views": 30,
   "reach": 22,
   "replies": 0,
   "shares": 0,
@@ -105,27 +124,9 @@
   "follows": 0,
   "profile_visits": 0,
   "navigation": {
-   "tap_forward": 17,
+   "tap_forward": 13,
    "tap_exit": 8,
-   "tap_back": 3
-  }
- },
- "18149778814489378": {
-  "posted_at": "2026-10-26T13:15+09:00",
-  "media_type": "VIDEO",
-  "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4016198185261182165",
-  "fetched_at": "2026-10-26T16:56+09:00",
-  "views": 20,
-  "reach": 14,
-  "replies": 0,
-  "shares": 0,
-  "total_interactions": 1,
-  "follows": 0,
-  "profile_visits": 0,
-  "navigation": {
-   "tap_forward": 9,
-   "tap_exit": 6,
-   "swipe_forward": 1,
+   "swipe_forward": 3,
    "tap_back": 1
   }
  }
