@@ -1,0 +1,35 @@
+name: めんたるIG ストーリーの数字を記録
+
+# ストーリーの数字は出ている24時間しか取れないので、2時間ごとに取って insights/stories.json に上書きする。
+# 手動で動かすときは Actions → この workflow → Run workflow
+on:
+  schedule:
+    - cron: '25 */2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mentaru-insights
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: ストーリーの数字を取る
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: python3 fetch_insights.py
+      - name: 記録をコミットする
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add insights/
+          git diff --staged --quiet && exit 0
+          git commit -m "ストーリーの数字 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M')"
+          for i in 1 2 3; do git push -q origin main && exit 0; git pull -q --rebase origin main; done
