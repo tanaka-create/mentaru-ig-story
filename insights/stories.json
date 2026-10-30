@@ -502,45 +502,28 @@
   "posted_at": "2026-10-30T09:14+09:00",
   "media_type": "IMAGE",
   "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4018975651029933106",
-  "fetched_at": "2026-10-30T15:04+09:00",
-  "views": 19,
-  "reach": 13,
+  "fetched_at": "2026-10-30T22:13+09:00",
+  "views": 43,
+  "reach": 29,
   "replies": 0,
   "shares": 0,
   "total_interactions": 1,
   "follows": 0,
   "profile_visits": 0,
   "navigation": {
-   "tap_back": 1,
-   "tap_forward": 12,
-   "tap_exit": 3
+   "swipe_forward": 1,
+   "tap_exit": 3,
+   "tap_forward": 27,
+   "tap_back": 4
   }
  },
  "18358224787218507": {
   "posted_at": "2026-10-30T09:14+09:00",
   "media_type": "IMAGE",
   "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4018975520201232339",
-  "fetched_at": "2026-10-30T15:04+09:00",
-  "views": 19,
-  "reach": 14,
-  "replies": 0,
-  "shares": 0,
-  "total_interactions": 1,
-  "follows": 0,
-  "profile_visits": 0,
-  "navigation": {
-   "tap_back": 1,
-   "tap_exit": 4,
-   "tap_forward": 11
-  }
- },
- "18116965832275499": {
-  "posted_at": "2026-10-30T10:13+09:00",
-  "media_type": "VIDEO",
-  "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4019005385717116458",
-  "fetched_at": "2026-10-30T15:04+09:00",
-  "views": 15,
-  "reach": 10,
+  "fetched_at": "2026-10-30T22:13+09:00",
+  "views": 48,
+  "reach": 32,
   "replies": 0,
   "shares": 0,
   "total_interactions": 1,
@@ -548,8 +531,27 @@
   "profile_visits": 0,
   "navigation": {
    "tap_back": 2,
-   "tap_forward": 6,
-   "tap_exit": 4
+   "tap_exit": 5,
+   "tap_forward": 26,
+   "swipe_forward": 3
+  }
+ },
+ "18116965832275499": {
+  "posted_at": "2026-10-30T10:13+09:00",
+  "media_type": "VIDEO",
+  "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4019005385717116458",
+  "fetched_at": "2026-10-30T22:13+09:00",
+  "views": 33,
+  "reach": 28,
+  "replies": 0,
+  "shares": 0,
+  "total_interactions": 1,
+  "follows": 0,
+  "profile_visits": 0,
+  "navigation": {
+   "tap_back": 3,
+   "tap_forward": 14,
+   "tap_exit": 12
   }
  }
 }
