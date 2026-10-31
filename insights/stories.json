@@ -558,38 +558,38 @@
   "posted_at": "2026-10-31T09:00+09:00",
   "media_type": "IMAGE",
   "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4019693461782397937",
-  "fetched_at": "2026-10-31T21:50+09:00",
-  "views": 34,
-  "reach": 27,
+  "fetched_at": "2026-11-01T03:39+09:00",
+  "views": 35,
+  "reach": 28,
   "replies": 0,
   "shares": 0,
-  "total_interactions": 0,
+  "total_interactions": 1,
   "follows": 0,
   "profile_visits": 0,
   "navigation": {
-   "tap_back": 1,
+   "swipe_forward": 4,
+   "tap_forward": 17,
    "tap_exit": 8,
-   "tap_forward": 16,
-   "swipe_forward": 4
+   "tap_back": 1
   }
  },
  "18034892792886740": {
   "posted_at": "2026-10-31T09:00+09:00",
   "media_type": "IMAGE",
   "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4019693356421541327",
-  "fetched_at": "2026-10-31T21:50+09:00",
-  "views": 42,
-  "reach": 33,
+  "fetched_at": "2026-11-01T03:39+09:00",
+  "views": 43,
+  "reach": 34,
   "replies": 0,
   "shares": 0,
-  "total_interactions": 0,
+  "total_interactions": 1,
   "follows": 0,
   "profile_visits": 0,
   "navigation": {
-   "tap_exit": 4,
-   "tap_forward": 25,
+   "tap_back": 2,
    "swipe_forward": 5,
-   "tap_back": 2
+   "tap_forward": 26,
+   "tap_exit": 4
   }
  }
 }
