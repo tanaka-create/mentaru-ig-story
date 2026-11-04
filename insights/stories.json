@@ -742,5 +742,40 @@
    "tap_exit": 9,
    "swipe_forward": 6
   }
+ },
+ "18656455885053854": {
+  "posted_at": "2026-11-05T06:00+09:00",
+  "media_type": "IMAGE",
+  "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4023227006145708149",
+  "fetched_at": "2026-11-05T08:48+09:00",
+  "views": 14,
+  "reach": 12,
+  "replies": 0,
+  "shares": 0,
+  "total_interactions": 0,
+  "follows": 0,
+  "profile_visits": 0,
+  "navigation": {
+   "tap_exit": 6,
+   "tap_forward": 6
+  }
+ },
+ "18122775043979283": {
+  "posted_at": "2026-11-05T06:00+09:00",
+  "media_type": "IMAGE",
+  "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4023226866223686856",
+  "fetched_at": "2026-11-05T08:48+09:00",
+  "views": 19,
+  "reach": 16,
+  "replies": 0,
+  "shares": 0,
+  "total_interactions": 0,
+  "follows": 0,
+  "profile_visits": 0,
+  "navigation": {
+   "swipe_forward": 1,
+   "tap_forward": 11,
+   "tap_exit": 2
+  }
  }
 }
