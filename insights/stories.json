@@ -1068,45 +1068,27 @@
   "posted_at": "2026-11-12T21:04+09:00",
   "media_type": "IMAGE",
   "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4028755370398128378",
-  "fetched_at": "2026-11-13T03:27+09:00",
-  "views": 35,
-  "reach": 31,
+  "fetched_at": "2026-11-13T10:13+09:00",
+  "views": 40,
+  "reach": 35,
   "replies": 0,
   "shares": 0,
   "total_interactions": 1,
   "follows": 0,
   "profile_visits": 0,
   "navigation": {
-   "swipe_forward": 1,
-   "tap_forward": 25,
-   "tap_exit": 5
+   "tap_exit": 6,
+   "tap_forward": 28,
+   "swipe_forward": 1
   }
  },
  "17988215631113822": {
   "posted_at": "2026-11-12T21:11+09:00",
   "media_type": "IMAGE",
   "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4028758561197666784",
-  "fetched_at": "2026-11-13T03:27+09:00",
-  "views": 37,
-  "reach": 29,
-  "replies": 0,
-  "shares": 0,
-  "total_interactions": 3,
-  "follows": 0,
-  "profile_visits": 0,
-  "navigation": {
-   "tap_exit": 4,
-   "tap_forward": 19,
-   "tap_back": 1
-  }
- },
- "18084179456362081": {
-  "posted_at": "2026-11-12T21:32+09:00",
-  "media_type": "IMAGE",
-  "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4028769229296274742",
-  "fetched_at": "2026-11-13T03:27+09:00",
-  "views": 38,
-  "reach": 31,
+  "fetched_at": "2026-11-13T10:13+09:00",
+  "views": 41,
+  "reach": 33,
   "replies": 0,
   "shares": 0,
   "total_interactions": 3,
@@ -1114,9 +1096,27 @@
   "profile_visits": 0,
   "navigation": {
    "tap_back": 1,
-   "swipe_forward": 1,
+   "tap_forward": 23,
+   "tap_exit": 4
+  }
+ },
+ "18084179456362081": {
+  "posted_at": "2026-11-12T21:32+09:00",
+  "media_type": "IMAGE",
+  "permalink": "https://www.instagram.com/stories/mentalsalon_comm/4028769229296274742",
+  "fetched_at": "2026-11-13T10:13+09:00",
+  "views": 42,
+  "reach": 35,
+  "replies": 0,
+  "shares": 0,
+  "total_interactions": 3,
+  "follows": 0,
+  "profile_visits": 0,
+  "navigation": {
+   "tap_back": 1,
+   "swipe_forward": 2,
    "tap_exit": 11,
-   "tap_forward": 15
+   "tap_forward": 18
   }
  }
 }
